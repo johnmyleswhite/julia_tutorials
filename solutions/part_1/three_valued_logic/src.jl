@@ -4,25 +4,13 @@
 macro tvl_or(x, y)
     quote
         let tmp1 = $(esc(x))
-            if !ismissing(tmp1)
-                if tmp1
-                    true
-                else
-                    tmp2 = $(esc(y))
-                    if !ismissing(tmp2)
-                        tmp2
-                    else
-                        missing
-                    end
-                end
+            if tmp1 === true
+                true
+            elseif tmp1 === false
+                $(esc(y))
             else
-                tmp2 = $(esc(y))
-                if !ismissing(tmp2)
-                    if tmp2
-                        true
-                    else
-                        tmp1
-                    end
+                if $(esc(y)) === true
+                    true
                 else
                     missing
                 end
@@ -37,25 +25,13 @@ end
 macro tvl_and(x, y)
     quote
         let tmp1 = $(esc(x))
-            if !ismissing(tmp1)
-                if !tmp1
-                    false
-                else
-                    tmp2 = $(esc(y))
-                    if !ismissing(tmp2)
-                        tmp2
-                    else
-                        missing
-                    end
-                end
+            if tmp1 === false
+                false
+            elseif tmp1 === true
+                $(esc(y))
             else
-                tmp2 = $(esc(y))
-                if !ismissing(tmp2)
-                    if !tmp2
-                        false
-                    else
-                        missing
-                    end
+                if $(esc(y)) === false
+                    false
                 else
                     missing
                 end
