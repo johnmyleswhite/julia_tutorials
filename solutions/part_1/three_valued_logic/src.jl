@@ -1,5 +1,6 @@
-# TODO: This is non-hygienic as written. Should replace tmp1 and
-# tmp2 with custom symbols from calling gensym.
+# TODO: This is non-hygienic as written if the inputs x or y refer to
+# tmp1 or tmp2. To fix, should replace tmp1 and tmp2 with custom symbols
+# from calling gensym.
 macro tvl_or(x, y)
     quote
         let tmp1 = $(esc(x))
@@ -30,8 +31,9 @@ macro tvl_or(x, y)
     end
 end
 
-# TODO: This is non-hygienic as written. Should replace tmp1 and
-# tmp2 with custom symbols from calling gensym.
+# TODO: This is non-hygienic as written if the inputs x or y refer to
+# tmp1 or tmp2. To fix, should replace tmp1 and tmp2 with custom symbols
+# from calling gensym.
 macro tvl_and(x, y)
     quote
         let tmp1 = $(esc(x))
