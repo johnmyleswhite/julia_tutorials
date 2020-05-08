@@ -3,27 +3,27 @@ import Test: @testset, @test
 include("src.jl")
 
 @testset "tvl_or truth table" begin
-    @test @tvl_or(true, true) === true
-    @test @tvl_or(true, false) === true
-    @test @tvl_or(true, missing) === true
-    @test @tvl_or(false, true) === true
-    @test @tvl_or(false, false) === false
-    @test @tvl_or(false, missing) === missing
-    @test @tvl_or(missing, true) === true
-    @test @tvl_or(missing, false) === missing
-    @test @tvl_or(missing, missing) === missing
+    @test @_tvl_or(true, true) === true
+    @test @_tvl_or(true, false) === true
+    @test @_tvl_or(true, missing) === true
+    @test @_tvl_or(false, true) === true
+    @test @_tvl_or(false, false) === false
+    @test @_tvl_or(false, missing) === missing
+    @test @_tvl_or(missing, true) === true
+    @test @_tvl_or(missing, false) === missing
+    @test @_tvl_or(missing, missing) === missing
 end
 
 @testset "tvl_and truth table" begin
-    @test @tvl_and(true, true) === true
-    @test @tvl_and(true, false) === false
-    @test @tvl_and(true, missing) === missing
-    @test @tvl_and(false, true) === false
-    @test @tvl_and(false, false) === false
-    @test @tvl_and(false, missing) === false
-    @test @tvl_and(missing, true) === missing
-    @test @tvl_and(missing, false) === false
-    @test @tvl_and(missing, missing) === missing
+    @test @_tvl_and(true, true) === true
+    @test @_tvl_and(true, false) === false
+    @test @_tvl_and(true, missing) === missing
+    @test @_tvl_and(false, true) === false
+    @test @_tvl_and(false, false) === false
+    @test @_tvl_and(false, missing) === false
+    @test @_tvl_and(missing, true) === missing
+    @test @_tvl_and(missing, false) === false
+    @test @_tvl_and(missing, missing) === missing
 end
 
 # We define a function that prints out a unique ID for each argument

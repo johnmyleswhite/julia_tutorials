@@ -1,15 +1,13 @@
-# TODO: This is non-hygienic as written if the inputs x or y refer to
-# tmp1 or tmp2. To fix, should replace tmp1 and tmp2 with custom symbols
-# from calling gensym.
-macro tvl_or(x, y)
+macro _tvl_or(x, y)
+    t1 = gensym()
     quote
-        let tmp1 = $(esc(x))
-            if tmp1 === true
+        let $t1 = $x
+            if $t1 === true
                 true
-            elseif tmp1 === false
-                $(esc(y))
+            elseif $t1 === false
+                $y
             else
-                if $(esc(y)) === true
+                if $y === true
                     true
                 else
                     missing
@@ -19,18 +17,16 @@ macro tvl_or(x, y)
     end
 end
 
-# TODO: This is non-hygienic as written if the inputs x or y refer to
-# tmp1 or tmp2. To fix, should replace tmp1 and tmp2 with custom symbols
-# from calling gensym.
-macro tvl_and(x, y)
+macro _tvl_and(x, y)
+    t1 = gensym()
     quote
-        let tmp1 = $(esc(x))
-            if tmp1 === false
+        let $t1 = $x
+            if $t1 === false
                 false
-            elseif tmp1 === true
-                $(esc(y))
+            elseif $t1 === true
+                $y
             else
-                if $(esc(y)) === false
+                if $y === false
                     false
                 else
                     missing
@@ -46,24 +42,23 @@ function replace_and_or(e::Expr)
     if e.head == :&&
         Expr(
             :macrocall,
-            Symbol("@tvl_and"),
+            Symbol("@_tvl_and"),
             LineNumberNode(0, nothing),
-            replace_and_or(e.args[1]),
-            replace_and_or(e.args[2]),
-
+            esc(replace_and_or(e.args[1])),
+            esc(replace_and_or(e.args[2])),
         )
     elseif e.head == :||
         Expr(
             :macrocall,
-            Symbol("@tvl_or"),
+            Symbol("@_tvl_or"),
             LineNumberNode(0, nothing),
-            replace_and_or(e.args[1]),
-            replace_and_or(e.args[2]),
+            esc(replace_and_or(e.args[1])),
+            esc(replace_and_or(e.args[2])),
         )
     else
         Expr(
             e.head,
-            map(replace_and_or, e.args)...
+            map(ex->esc(replace_and_or(ex)), e.args)...
         )
     end
 end
@@ -72,5 +67,5 @@ end
 # let blocks, so there's potentially shadowing, but no leakage,
 # of variables AFAIK.
 macro tvl(e)
-    esc(replace_and_or(e))
+    replace_and_or(e)
 end
