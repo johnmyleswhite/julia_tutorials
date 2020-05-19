@@ -63,9 +63,6 @@ function replace_and_or(e::Expr)
     end
 end
 
-# TODO: Move esc to a better place? The macro expansions are all
-# let blocks, so there's potentially shadowing, but no leakage,
-# of variables AFAIK.
 macro tvl(e)
     replace_and_or(e)
 end
